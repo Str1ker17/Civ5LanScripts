@@ -46,5 +46,6 @@ catch(Exception $e) {
 }
 
 http_response_code($ret["status"] == 0 ? 200 : 403);
+header("Content-Type: application/json");
 print json_encode($ret);
 exit(0);
