@@ -20,6 +20,7 @@ while IFS=';' read -r valid_username valid_password ; do
   if [ "${username}" = "${valid_username}" ] ; then
     if [ "${password}" = "${valid_password}" ] ; then
       echo "User '${username}' password MATCH"
+      mkdir -p "${userdir}"
       export > "${userdir}/${username}.env"
       exit 0
     else

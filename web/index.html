@@ -10,27 +10,32 @@
 <body>
 <div style="max-width: 640px; margin: 0">
 <div>Проверка связи</div>
-<div>Ваш IP-адрес: <span id="src_ip">?</span></div>
+<div>Ваш IP-адрес внутри VPN: <span id="src_ip">?</span></div>
 
 <div>
-<div id="latency-indicator"><div class="loading circle"></div></div>
-<div>
-<div id="latency-excellent" style="display:none">Связь отлично подходит для игры</div>
-<div id="latency-good" style="display:none">Скорее всего, вы не в Новосибирске. Тем не менее, связь хорошо подходит для игры</div>
-<div id="latency-fair" style="display:none">Скорее всего, вы не в России или используете мобильный интернет, также возможно включен другой VPN. Вероятны умеренные проблемы со связью в процессе игры</div>
-<div id="latency-bad" style="display:none">Ваше подключение функционирует, но создаст проблемы со связью в процессе игры из-за большого пинга. Постарайтесь устранить проблему</div>
-<div id="latency-none" style="display:none">Обратный пинг не сработал и игра работать НЕ БУДЕТ! Отключите firewall и попробуйте обновить страницу</div>
-</div>
+<div>Минимальный пинг: <span id="latency-indicator"><span class="loading circle"></span></span></div>
 </div>
 
 <div>
-<div id="jitter-indicator"><div class="loading circle"></div></div>
+<div>Jitter - колебания пинга: <span id="jitter-indicator"><span class="loading circle"></span> (терпение, тест занимает около 2 сек.)</span></div>
+</div>
+
 <div>
-<div id="jitter-significant" style="display:none">У вас нестабильный пинг. Будут подёргивания ("лаги") в процессе игры, которые раздражают вас и других игроков. Постарайтесь использовать более стабильное подключение к Интернету</div>
+<div>
+<div id="latency-eval-excellent" style="display:none">Связь отлично подходит для игры</div>
+<div id="latency-eval-good" style="display:none">Скорее всего, вы не в Новосибирске. Тем не менее, связь хорошо подходит для игры</div>
+<div id="latency-eval-fair" style="display:none">Скорее всего, вы не в России или используете мобильный интернет, также возможно включен другой VPN. Вероятны умеренные проблемы со связью в процессе игры</div>
+<div id="latency-eval-bad" style="display:none">Ваше подключение функционирует, но создаст проблемы со связью в процессе игры из-за большого пинга. Постарайтесь устранить проблему</div>
+<div id="latency-eval-none" style="display:none">Обратный пинг не сработал и игра работать НЕ БУДЕТ! Отключите firewall и попробуйте обновить страницу</div>
+</div>
+<div>
+<div id="jitter-significant" style="display:none">У вас нестабильный пинг. Будут подёргивания ("лаги") в процессе игры, которые раздражают вас и других игроков. Постарайтесь по возможности использовать более стабильное подключение к Интернету</div>
 </div>
 </div>
 
-<div class="loading bar"></div>
+<div class="loading bar" style="display:none"><img src="loading_bar.gif"/></div>
+<div id="technical_data" style="font-style: italic; font-size: small"></div>
+<div>Copyleft (c) Str1ker, 2023. All rights are horse-fucked.</div>
 </div>
 <script src="index.js"></script>
 </body>

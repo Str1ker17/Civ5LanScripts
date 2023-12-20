@@ -1,15 +1,27 @@
+var measurements_done = false;
+
 function processResults(data) {
-    if (data === undefined) {
-        $("#latency-indicator")[0].innerText = "Ошибка сервера!!"
-        return;
+    if (data === undefined || data.status === undefined || data.src_ip === undefined) {
+        $("#latency-indicator").text("Неизвестная ошибка сервера!!");
+        return false;
+    }
+    if (data.status != 0) {
+        $("#latency-indicator").text(data.status + " - " + data.msg);
+        return false;
     }
 
-    $("#src_ip")[0].innerText = data.src_ip;
-    ping = data.latency_min;
-    jitter = data.latency_max - data.latency_min;
+    $("#src_ip").text(data.src_ip);
 
-    if (ping > 0) {
-        $("#latency-indicator")[0].innerText = ping + " мс."
+    ping = data.latency_min;
+    if (ping < 0) {
+        $("#latency-eval-none").show();
+        return;
+    }
+    $("#latency-indicator").text(ping + " мс.");
+
+    jitter = data.latency_max - data.latency_min;
+    if (jitter <= 0) { /* Only one ping is not precise to make assumptions. */
+        return;
     }
 
     if (ping < 0) {
@@ -23,20 +35,21 @@ function processResults(data) {
     } else {
         latency_eval = "bad";
     }
-    $("#latency-" + latency_eval).show();
-
-    if (jitter > 0) {
-        $("#jitter-indicator").text(ping + " мс.");
-        if (jitter > 20) {
-            $("#jitter-significant").show();
-        }
+    $("#latency-eval-" + latency_eval).show();
+    
+    $("#jitter-indicator").text(jitter + " мс.");
+    if (jitter > 25) {
+        $("#jitter-significant").show();
     }
+    $("#technical_data").text(JSON.stringify(data));
 }
 
 function doConnectionTest_Complete(data) {
-    processResults(data.responseJSON);
-    if (data.latency_min !== undefined && data.latency_min >= 0) {
+    res = data.responseJSON;
+    processResults(res);
+    if (!measurements_done && res.latency_min !== undefined && res.latency_min >= 0) {
         callRPC("latency", $("#jitter-indicator"));
+        measurements_done = true;
     }
 }
 
@@ -59,8 +72,7 @@ function doConnectionTest() {
 
 (function init($, undefined) {
     $(".loading").hide();
-    $(".loading.circle").html("<img src='loading.gif'/>");
-    $(".loading.bar").html("<img src='loading_bar.gif'/>");
+    $(".loading.circle").html("<img src='loading.gif' width='16' height='16'/>");
     $(document).on("ajaxStart", function() { $(".loading.bar").show(); });
     $(document).on("ajaxStop", function() { $(".loading.bar").hide(); });
     doConnectionTest();
