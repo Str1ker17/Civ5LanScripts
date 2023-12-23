@@ -14,9 +14,9 @@ function do_latency_test($cmd, &$ret) {
         if (preg_match("~^round-trip min/avg/max = ([\d]+)\.[\d]+/([\d]+)\.[\d]+/([\d]+)\.[\d]+ ms$~s", $output[4], $m) != 1) {
             throw new Exception("Server ping command output format mismatch");
         }
-        $ret["latency_min"] = $m[1];
-        $ret["latency_avg"] = $m[2];
-        $ret["latency_max"] = $m[3];
+        $ret["latency_min"] = intval($m[1]);
+        $ret["latency_avg"] = intval($m[2]);
+        $ret["latency_max"] = intval($m[3]);
     }
 }
 

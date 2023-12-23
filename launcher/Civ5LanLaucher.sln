@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Civ5LanLauncher", "Civ5LanLauncher.csproj", "{C35AF853-0751-4DD9-B715-366AE6732B1A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C35AF853-0751-4DD9-B715-366AE6732B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C35AF853-0751-4DD9-B715-366AE6732B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C35AF853-0751-4DD9-B715-366AE6732B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C35AF853-0751-4DD9-B715-366AE6732B1A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8BF50471-2A0B-4BE1-9210-5450BD72D507}
+	EndGlobalSection
+EndGlobal
