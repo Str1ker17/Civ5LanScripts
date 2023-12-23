@@ -193,13 +193,17 @@ namespace Civ5LanLauncher
                     return;
                 }
 
-                if (File.Exists(Path.Combine(configDir, "nsk1-tap.ovpn"))) {
+                bool overwrite = true;
+                String configFilePath = Path.Combine(configDir, "nsk1-tap.ovpn");
+                if (File.Exists(configFilePath)) {
                     DialogResult dr = MessageBox.Show("Файл конфигурации уже существует. Перезаписать?"
                         , "Файл конфигурации уже существует", MessageBoxButtons.YesNo);
-                    if (dr == DialogResult.Yes) {
-                        File.WriteAllBytes(Path.Combine(configDir, "nsk1-tap.ovpn")
-                            , Properties.Resources.OpenVPN_ClientConfig);
+                    if (dr == DialogResult.No) {
+                        overwrite = false;
                     }
+                }
+                if (overwrite) {
+                    File.WriteAllBytes(configFilePath, Properties.Resources.OpenVPN_ClientConfig);
                 }
 
                 using (Process p = Process.Start(@"C:\Program Files\OpenVPN\bin\openvpn-gui.exe"
