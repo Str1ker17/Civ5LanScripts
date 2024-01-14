@@ -34,5 +34,17 @@ namespace Civ5LanLauncher.Properties {
                 this["Civ5ExePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OverwriteConfig {
+            get {
+                return ((bool)(this["OverwriteConfig"]));
+            }
+            set {
+                this["OverwriteConfig"] = value;
+            }
+        }
     }
 }

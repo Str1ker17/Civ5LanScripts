@@ -35,6 +35,13 @@ try {
             do_latency_test($cmd, $ret);
             break;
         }
+        case "udpservertest": {
+            $port = isset($req["port"]) ? intval($req["port"]) : 62900;
+            $size = isset($req["size"]) ? intval($req["size"]) : 64000;
+            $cmd = sprintf("dd if=/dev/urandom bs=%u count=1 | ncat -4 -u -s 172.16.16.1 %s %u", $size, $_SERVER["REMOTE_ADDR"], $port);
+            exec($cmd, $output, $rc);
+            break;
+        }
         default: {
             throw new Exception("Unsupported func '${req["func"]}'");
         }

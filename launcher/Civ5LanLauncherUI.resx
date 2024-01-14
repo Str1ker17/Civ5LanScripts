@@ -118,34 +118,34 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="button1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="button_ChooseGameExe.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="button_ChooseGameExe.Location" type="System.Drawing.Point, System.Drawing">
     <value>284, 99</value>
   </data>
-  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="button_ChooseGameExe.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+  <data name="button_ChooseGameExe.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="button1.Text" xml:space="preserve">
+  <data name="button_ChooseGameExe.Text" xml:space="preserve">
     <value>Выбрать...</value>
   </data>
-  <data name="&gt;&gt;button1.Name" xml:space="preserve">
-    <value>button1</value>
+  <data name="&gt;&gt;button_ChooseGameExe.Name" xml:space="preserve">
+    <value>button_ChooseGameExe</value>
   </data>
-  <data name="&gt;&gt;button1.Type" xml:space="preserve">
+  <data name="&gt;&gt;button_ChooseGameExe.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;button_ChooseGameExe.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
-    <value>16</value>
+  <data name="&gt;&gt;button_ChooseGameExe.ZOrder" xml:space="preserve">
+    <value>19</value>
   </data>
   <data name="button_RunGame.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -175,19 +175,25 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;button_RunGame.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>18</value>
   </data>
+  <metadata name="hoverHints.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>423, 17</value>
+  </metadata>
   <data name="pictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="pictureBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 13</value>
+    <value>13, 10</value>
   </data>
   <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 75</value>
   </data>
   <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="pictureBox1.ToolTip" xml:space="preserve">
+    <value>Статус сетевого подключения</value>
   </data>
   <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
     <value>pictureBox1</value>
@@ -199,7 +205,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>17</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -229,7 +235,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>16</value>
   </data>
   <data name="label_VPNActive.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -259,7 +265,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label_VPNActive.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>15</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -289,7 +295,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>14</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -309,6 +315,9 @@
   <data name="label4.Text" xml:space="preserve">
     <value>Видимость игрокам:</value>
   </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value>Успешность прохождения различных тестов таких, как ICMPv4 ping и открытый порт UDP в диапазоне Civilization V</value>
+  </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
   </data>
@@ -319,37 +328,34 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>13</value>
   </data>
-  <data name="label_UDPPingback.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label_UDPServerMode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label_UDPPingback.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="label_UDPServerMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>210, 53</value>
   </data>
-  <data name="label_UDPPingback.Location" type="System.Drawing.Point, System.Drawing">
-    <value>212, 53</value>
-  </data>
-  <data name="label_UDPPingback.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="label_UDPServerMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>14, 16</value>
   </data>
-  <data name="label_UDPPingback.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+  <data name="label_UDPServerMode.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
   </data>
-  <data name="label_UDPPingback.Text" xml:space="preserve">
+  <data name="label_UDPServerMode.Text" xml:space="preserve">
     <value>?</value>
   </data>
-  <data name="&gt;&gt;label_UDPPingback.Name" xml:space="preserve">
-    <value>label_UDPPingback</value>
+  <data name="&gt;&gt;label_UDPServerMode.Name" xml:space="preserve">
+    <value>label_UDPServerMode</value>
   </data>
-  <data name="&gt;&gt;label_UDPPingback.Type" xml:space="preserve">
+  <data name="&gt;&gt;label_UDPServerMode.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label_UDPPingback.Parent" xml:space="preserve">
+  <data name="&gt;&gt;label_UDPServerMode.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;label_UDPPingback.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="&gt;&gt;label_UDPServerMode.ZOrder" xml:space="preserve">
+    <value>12</value>
   </data>
   <data name="label_IPAddr.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -379,7 +385,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label_IPAddr.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -409,7 +415,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="label_LatencyValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -439,7 +445,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label_LatencyValue.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -469,34 +475,34 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
-  <data name="button3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="button_CheckConnectivity.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="button3.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="button_CheckConnectivity.Location" type="System.Drawing.Point, System.Drawing">
     <value>331, 10</value>
   </data>
-  <data name="button3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="button_CheckConnectivity.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 75</value>
   </data>
-  <data name="button3.TabIndex" type="System.Int32, mscorlib">
+  <data name="button_CheckConnectivity.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="button3.Text" xml:space="preserve">
+  <data name="button_CheckConnectivity.Text" xml:space="preserve">
     <value>Перепроверить связь</value>
   </data>
-  <data name="&gt;&gt;button3.Name" xml:space="preserve">
-    <value>button3</value>
+  <data name="&gt;&gt;button_CheckConnectivity.Name" xml:space="preserve">
+    <value>button_CheckConnectivity</value>
   </data>
-  <data name="&gt;&gt;button3.Type" xml:space="preserve">
+  <data name="&gt;&gt;button_CheckConnectivity.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;button3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;button_CheckConnectivity.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;button3.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;button_CheckConnectivity.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="button_TurnOnVPN.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -526,13 +532,100 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;button_TurnOnVPN.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <metadata name="statusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>294, 17</value>
+  </metadata>
+  <data name="statusStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 250</value>
+  </data>
+  <data name="statusStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>462, 26</value>
+  </data>
+  <data name="statusStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;statusStrip.Name" xml:space="preserve">
+    <value>statusStrip</value>
+  </data>
+  <data name="&gt;&gt;statusStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;statusStrip.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;statusStrip.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="toolStripStatusLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>110, 20</value>
+  </data>
+  <data name="toolStripStatusLabel1.Text" xml:space="preserve">
+    <value>Строка статуса</value>
+  </data>
+  <data name="pictureBox2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pictureBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 98</value>
+  </data>
+  <data name="pictureBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 24</value>
+  </data>
+  <data name="pictureBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="pictureBox2.ToolTip" xml:space="preserve">
+    <value>Статус файла игры</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.Name" xml:space="preserve">
+    <value>pictureBox2</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="checkBox_TurnOnVPN_OverwriteConfig.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBox_TurnOnVPN_OverwriteConfig.Location" type="System.Drawing.Point, System.Drawing">
+    <value>215, 14</value>
+  </data>
+  <data name="checkBox_TurnOnVPN_OverwriteConfig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>18, 17</value>
+  </data>
+  <data name="checkBox_TurnOnVPN_OverwriteConfig.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="checkBox_TurnOnVPN_OverwriteConfig.ToolTip" xml:space="preserve">
+    <value>Перезаписать конфигурацию подключения к VPN</value>
+  </data>
+  <data name="checkBox_TurnOnVPN_OverwriteConfig.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;checkBox_TurnOnVPN_OverwriteConfig.Name" xml:space="preserve">
+    <value>checkBox_TurnOnVPN_OverwriteConfig</value>
+  </data>
+  <data name="&gt;&gt;checkBox_TurnOnVPN_OverwriteConfig.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox_TurnOnVPN_OverwriteConfig.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;checkBox_TurnOnVPN_OverwriteConfig.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="textBox_Civ5ExePath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 124</value>
+    <value>13, 128</value>
   </data>
   <data name="textBox_Civ5ExePath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>438, 22</value>
+    <value>437, 22</value>
   </data>
   <data name="textBox_Civ5ExePath.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -547,73 +640,61 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;textBox_Civ5ExePath.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
-  <metadata name="chooseYourFighter.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="openFileDialog_chooseGameExe.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="chooseYourFighter.Filter" xml:space="preserve">
-    <value>Civ 5|CivilizationV.exe;CivilizationV_DX11.exe;CivilizationV_Tablet.exe</value>
+  <data name="openFileDialog_chooseGameExe.Filter" xml:space="preserve">
+    <value>Civilization 5 game exe|CivilizationV.exe;CivilizationV_DX11.exe;CivilizationV_Tablet.exe</value>
   </data>
-  <data name="chooseYourFighter.Title" xml:space="preserve">
-    <value>Where is your Civilization V?</value>
-  </data>
-  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>199, 17</value>
+  <metadata name="hoverHints.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>423, 17</value>
   </metadata>
-  <data name="toolStripStatusLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 20</value>
+  <metadata name="contextMenuStrip_ServerList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>554, 17</value>
+  </metadata>
+  <data name="contextMenuStrip_ServerList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 4</value>
   </data>
-  <data name="toolStripStatusLabel1.Text" xml:space="preserve">
-    <value>Строка статуса</value>
+  <data name="contextMenuStrip_ServerList.ToolTip" xml:space="preserve">
+    <value>Нажмите кнопку, чтобы обновить список серверов в локальной сети</value>
   </data>
-  <data name="statusStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 250</value>
+  <data name="&gt;&gt;contextMenuStrip_ServerList.Name" xml:space="preserve">
+    <value>contextMenuStrip_ServerList</value>
   </data>
-  <data name="statusStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>462, 26</value>
+  <data name="&gt;&gt;contextMenuStrip_ServerList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="statusStrip1.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+  <data name="button_ServerList.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="statusStrip1.Text" xml:space="preserve">
-    <value>statusStrip1</value>
+  <data name="button_ServerList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 157</value>
   </data>
-  <data name="&gt;&gt;statusStrip1.Name" xml:space="preserve">
-    <value>statusStrip1</value>
+  <data name="button_ServerList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 26</value>
   </data>
-  <data name="&gt;&gt;statusStrip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="button_ServerList.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
   </data>
-  <data name="&gt;&gt;statusStrip1.Parent" xml:space="preserve">
+  <data name="button_ServerList.Text" xml:space="preserve">
+    <value>Сервера: 0</value>
+  </data>
+  <data name="button_ServerList.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;button_ServerList.Name" xml:space="preserve">
+    <value>button_ServerList</value>
+  </data>
+  <data name="&gt;&gt;button_ServerList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_ServerList.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;statusStrip1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;button_ServerList.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="pictureBox2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pictureBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 94</value>
-  </data>
-  <data name="pictureBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
-  </data>
-  <data name="pictureBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.Name" xml:space="preserve">
-    <value>pictureBox2</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -703,17 +784,23 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Civilization V LAN Launcher</value>
   </data>
-  <data name="&gt;&gt;chooseYourFighter.Name" xml:space="preserve">
-    <value>chooseYourFighter</value>
-  </data>
-  <data name="&gt;&gt;chooseYourFighter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;toolStripStatusLabel1.Name" xml:space="preserve">
     <value>toolStripStatusLabel1</value>
   </data>
   <data name="&gt;&gt;toolStripStatusLabel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;openFileDialog_chooseGameExe.Name" xml:space="preserve">
+    <value>openFileDialog_chooseGameExe</value>
+  </data>
+  <data name="&gt;&gt;openFileDialog_chooseGameExe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;hoverHints.Name" xml:space="preserve">
+    <value>hoverHints</value>
+  </data>
+  <data name="&gt;&gt;hoverHints.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Civ5LanLauncherUI</value>
