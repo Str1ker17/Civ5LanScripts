@@ -7,8 +7,10 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -40,6 +42,18 @@ namespace Civ5LanLauncher
             return MessageBox.Show(this, text, caption ?? "Civilization V LAN Launcher", buttons, icon);
         }
 
+        private static DialogResult MessageBoxS(String text, String caption = null
+            , MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None) {
+            return MessageBox.Show(null, text, caption ?? "Civilization V LAN Launcher", buttons, icon);
+        }
+
+        /*
+        private DialogResult MessageBoxA(String text, String caption = null
+            , MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None) {
+            return MessageBox.Show(this, text, caption ?? "Civilization V LAN Launcher", buttons, icon);
+        }
+        */
+
         /* Fields. */
         private NetworkInterface tapInterface;
         private IPAddress tapAddr;
@@ -47,6 +61,7 @@ namespace Civ5LanLauncher
         private Boolean canRunExe;
 
         private void UpdateCanRun() {
+            button_TestMTU.Enabled = canRunNet;
             if (canRunNet && canRunExe) {
                 toolStripStatusLabel1.Text = "Всё готово для игры";
                 button_RunGame.Enabled = true;
@@ -170,6 +185,120 @@ namespace Civ5LanLauncher
 
             Console.WriteLine(responseText);
             return responseText;
+        }
+
+        private class Ping2 : Ping
+        {
+            public UInt16 Length { get; }
+
+            public Ping2(UInt16 len) {
+                Length = len;
+            }
+        }
+
+#if PING_ASYNC
+        private Mutex m = new Mutex();
+
+        private void RunMTUTest() {
+            Dictionary<UInt16, Tuple<Ping2, PingCompletedEventArgs>> hs =
+                new Dictionary<UInt16, Tuple<Ping2, PingCompletedEventArgs>>();
+
+            void OnPingCompleted(Object sender, PingCompletedEventArgs e) {
+                UInt16 l = ((Ping2)sender).Length;
+                if (!m.WaitOne(10)) {
+                    throw new Exception();
+                }
+
+                hs[l] = new Tuple<Ping2, PingCompletedEventArgs>(hs[l].Item1, e);
+                m.ReleaseMutex();
+            }
+
+            /*
+            hs[1300] = null;
+            hs[1397] = null;
+            hs[1398] = null;
+            hs[1405] = null;
+            hs[1406] = null;
+            hs[1472] = null;
+            hs[1473] = null;
+            hs[(UInt16)tapInterface.GetIPProperties().GetIPv4Properties().Mtu] = null;
+            */
+            for (UInt16 l = 1300; l <= (UInt16)tapInterface.GetIPProperties().GetIPv4Properties().Mtu; ++l) {
+                hs[l] = null;
+            }
+
+            List<UInt16> keys = new List<UInt16>(hs.Keys);
+            foreach (UInt16 l in keys) {
+                Ping2 p = new Ping2(l);
+                p.PingCompleted += OnPingCompleted;
+                p.SendAsync(IPAddress.Parse("172.16.16.1"), 1000, new Byte[l]
+                    , new PingOptions { DontFragment = true });
+                hs[l] = new Tuple<Ping2, PingCompletedEventArgs>(p, null);
+                Thread.Sleep(3);
+            }
+
+            Thread.Sleep(1000);
+
+            m.WaitOne();
+            String ret = String.Empty;
+            foreach (UInt16 l in hs.Keys) {
+                Tuple<Ping2, PingCompletedEventArgs> t = hs[l];
+                PingCompletedEventArgs e = t.Item2;
+                if (e == null) {
+                    ret += $"{l} got no response\n";
+                    continue;
+                }
+
+                if (e.Cancelled) {
+                    ret += $"{l} is cancelled\n";
+                    continue;
+                }
+
+                if (e.Error != null) {
+                    ret += $"{l} exception: {e.Error}\n";
+                    continue;
+                }
+
+                if (e.Reply.Status != IPStatus.Success) {
+                    ret += $"{l} status {e.Reply.Status}\n";
+                    continue;
+                }
+
+                //ret += $"{l} OK\n";
+            }
+
+            foreach (UInt16 l in hs.Keys) {
+                hs[l].Item1.Dispose();
+            }
+
+            m.ReleaseMutex();
+
+            if (ret != String.Empty) {
+                MessageBoxA(ret);
+            }
+        }
+#endif
+
+        private void RunMTUTest() {
+            String ret = String.Empty;
+            for (UInt16 l = 1300; l <= (UInt16)tapInterface.GetIPProperties().GetIPv4Properties().Mtu; ++l) {
+                Ping p = new Ping();
+                PingReply pr = p.Send(IPAddress.Parse("172.16.16.1"), 300, new Byte[l], new PingOptions { DontFragment = true });
+                if (pr == null) {
+                    ret += $"{l} got no response\n";
+                    continue;
+                }
+                if (pr.Status != IPStatus.Success) {
+                    ret += $"{l} status {pr.Status}\n";
+                    continue;
+                }
+
+                Thread.Sleep(0);
+            }
+
+            if (ret != String.Empty) {
+                MessageBoxA(ret);
+            }
         }
 
         private void CheckVPNResponse() {
@@ -358,9 +487,9 @@ namespace Civ5LanLauncher
                 }
 
                 FileVersionInfo vpnCliVer = FileVersionInfo.GetVersionInfo(vpnCliExe);
-                if (Version.Parse(vpnCliVer.FileVersion) < Version.Parse("2.6")) {
+                if (Version.Parse(vpnCliVer.FileVersion) < Version.Parse("2.5.0")) {
                     DialogResult dr = MessageBoxA(
-                        $"Установлен OpenVPN версии {vpnCliVer.FileMajorPart}.{vpnCliVer.FileMinorPart}.{vpnCliVer.FileBuildPart}, а нужен 2.6 или новее. Открыть ссылку скачивания?"
+                        $"Установлен OpenVPN версии {vpnCliVer.FileMajorPart}.{vpnCliVer.FileMinorPart}.{vpnCliVer.FileBuildPart}, а нужен 2.5.0 или новее. Открыть ссылку скачивания?"
                         , "OpenVPN старой версии", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (dr == DialogResult.No) {
                         return;
@@ -424,7 +553,7 @@ namespace Civ5LanLauncher
 
         private void Form1_Load(Object sender, EventArgs e) {
             UpdateCanRunExe(CheckExe(Properties.Settings.Default.Civ5ExePath));
-            Task.Run(CheckConnectivity);
+            CheckConnectivity();
         }
 
         private void button_CheckConnectivity_Click(Object sender, EventArgs e) {
@@ -465,6 +594,10 @@ namespace Civ5LanLauncher
 
         private void checkBox_TurnOnVPN_OverwriteConfig_CheckedChanged(Object sender, EventArgs e) {
             Properties.Settings.Default.Save();
+        }
+
+        private void button_TestMTU_Click(Object sender, EventArgs e) {
+            RunMTUTest();
         }
 
         private void pictureBox1_Paint(Object sender, PaintEventArgs e) {

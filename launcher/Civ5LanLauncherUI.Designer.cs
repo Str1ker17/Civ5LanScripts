@@ -53,6 +53,7 @@
             this.hoverHints = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip_ServerList = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.button_ServerList = new System.Windows.Forms.Button();
+            this.button_TestMTU = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -210,10 +211,18 @@
             this.button_ServerList.MouseEnter += new System.EventHandler(this.button_ServerList_MouseEnter);
             this.button_ServerList.MouseLeave += new System.EventHandler(this.button_ServerList_MouseLeave);
             // 
+            // button_TestMTU
+            // 
+            resources.ApplyResources(this.button_TestMTU, "button_TestMTU");
+            this.button_TestMTU.Name = "button_TestMTU";
+            this.button_TestMTU.UseVisualStyleBackColor = true;
+            this.button_TestMTU.Click += new System.EventHandler(this.button_TestMTU_Click);
+            // 
             // Civ5LanLauncherUI
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.button_TestMTU);
             this.Controls.Add(this.button_ServerList);
             this.Controls.Add(this.checkBox_TurnOnVPN_OverwriteConfig);
             this.Controls.Add(this.pictureBox2);
@@ -271,6 +280,7 @@
         private System.Windows.Forms.ToolTip hoverHints;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip_ServerList;
         private System.Windows.Forms.Button button_ServerList;
+        private System.Windows.Forms.Button button_TestMTU;
     }
 }
 
