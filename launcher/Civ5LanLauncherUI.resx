@@ -135,6 +135,12 @@
   <data name="button_ChooseGameExe.Text" xml:space="preserve">
     <value>Выбрать...</value>
   </data>
+  <metadata name="hoverHints.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>423, 17</value>
+  </metadata>
+  <data name="button_ChooseGameExe.ToolTip" xml:space="preserve">
+    <value>Предпочтительно выбирать CivilizationV_DX11</value>
+  </data>
   <data name="&gt;&gt;button_ChooseGameExe.Name" xml:space="preserve">
     <value>button_ChooseGameExe</value>
   </data>
@@ -189,9 +195,6 @@
   <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <metadata name="hoverHints.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>423, 17</value>
-  </metadata>
   <data name="pictureBox1.ToolTip" xml:space="preserve">
     <value>Статус сетевого подключения</value>
   </data>
@@ -332,6 +335,9 @@
   </data>
   <data name="label_UDPServerMode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="label_UDPServerMode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label_UDPServerMode.Location" type="System.Drawing.Point, System.Drawing">
     <value>210, 53</value>
@@ -591,8 +597,83 @@
   <data name="&gt;&gt;pictureBox2.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <metadata name="contextMenuStrip_ServerList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>554, 17</value>
+  </metadata>
+  <data name="contextMenuStrip_ServerList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 4</value>
+  </data>
+  <data name="contextMenuStrip_ServerList.ToolTip" xml:space="preserve">
+    <value>Нажмите кнопку, чтобы обновить список серверов в локальной сети</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStrip_ServerList.Name" xml:space="preserve">
+    <value>contextMenuStrip_ServerList</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStrip_ServerList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_ServerList.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="button_ServerList.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="button_ServerList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 157</value>
+  </data>
+  <data name="button_ServerList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 26</value>
+  </data>
+  <data name="button_ServerList.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="button_ServerList.Text" xml:space="preserve">
+    <value>Сервера: 0</value>
+  </data>
+  <data name="&gt;&gt;button_ServerList.Name" xml:space="preserve">
+    <value>button_ServerList</value>
+  </data>
+  <data name="&gt;&gt;button_ServerList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_ServerList.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;button_ServerList.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="button_TestMTU.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="button_TestMTU.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 215</value>
+  </data>
+  <data name="button_TestMTU.Size" type="System.Drawing.Size, System.Drawing">
+    <value>86, 23</value>
+  </data>
+  <data name="button_TestMTU.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="button_TestMTU.Text" xml:space="preserve">
+    <value>Тест MTU</value>
+  </data>
+  <data name="&gt;&gt;button_TestMTU.Name" xml:space="preserve">
+    <value>button_TestMTU</value>
+  </data>
+  <data name="&gt;&gt;button_TestMTU.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_TestMTU.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;button_TestMTU.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="checkBox_TurnOnVPN_OverwriteConfig.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="checkBox_TurnOnVPN_OverwriteConfig.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="checkBox_TurnOnVPN_OverwriteConfig.Location" type="System.Drawing.Point, System.Drawing">
     <value>215, 14</value>
@@ -646,79 +727,7 @@
     <value>17, 17</value>
   </metadata>
   <data name="openFileDialog_chooseGameExe.Filter" xml:space="preserve">
-    <value>Civilization 5 game exe|CivilizationV.exe;CivilizationV_DX11.exe;CivilizationV_Tablet.exe</value>
-  </data>
-  <metadata name="contextMenuStrip_ServerList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>554, 17</value>
-  </metadata>
-  <data name="contextMenuStrip_ServerList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 4</value>
-  </data>
-  <data name="contextMenuStrip_ServerList.ToolTip" xml:space="preserve">
-    <value>Нажмите кнопку, чтобы обновить список серверов в локальной сети</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStrip_ServerList.Name" xml:space="preserve">
-    <value>contextMenuStrip_ServerList</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStrip_ServerList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="button_ServerList.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="button_ServerList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 157</value>
-  </data>
-  <data name="button_ServerList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 26</value>
-  </data>
-  <data name="button_ServerList.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="button_ServerList.Text" xml:space="preserve">
-    <value>Сервера: 0</value>
-  </data>
-  <data name="button_ServerList.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;button_ServerList.Name" xml:space="preserve">
-    <value>button_ServerList</value>
-  </data>
-  <data name="&gt;&gt;button_ServerList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button_ServerList.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;button_ServerList.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="button_TestMTU.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="button_TestMTU.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 215</value>
-  </data>
-  <data name="button_TestMTU.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 23</value>
-  </data>
-  <data name="button_TestMTU.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
-  </data>
-  <data name="button_TestMTU.Text" xml:space="preserve">
-    <value>Тест MTU</value>
-  </data>
-  <data name="&gt;&gt;button_TestMTU.Name" xml:space="preserve">
-    <value>button_TestMTU</value>
-  </data>
-  <data name="&gt;&gt;button_TestMTU.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button_TestMTU.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;button_TestMTU.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>Civilization V game exe|CivilizationV.exe;CivilizationV_DX11.exe;CivilizationV_Tablet.exe|Executables|*.exe</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -814,17 +823,17 @@
   <data name="&gt;&gt;toolStripStatusLabel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;openFileDialog_chooseGameExe.Name" xml:space="preserve">
-    <value>openFileDialog_chooseGameExe</value>
-  </data>
-  <data name="&gt;&gt;openFileDialog_chooseGameExe.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;hoverHints.Name" xml:space="preserve">
     <value>hoverHints</value>
   </data>
   <data name="&gt;&gt;hoverHints.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;openFileDialog_chooseGameExe.Name" xml:space="preserve">
+    <value>openFileDialog_chooseGameExe</value>
+  </data>
+  <data name="&gt;&gt;openFileDialog_chooseGameExe.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Civ5LanLauncherUI</value>

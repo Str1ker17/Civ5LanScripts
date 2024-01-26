@@ -46,5 +46,17 @@ namespace Civ5LanLauncher.Properties {
                 this["OverwriteConfig"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int VPNCredentialsHintLeft {
+            get {
+                return ((int)(this["VPNCredentialsHintLeft"]));
+            }
+            set {
+                this["VPNCredentialsHintLeft"] = value;
+            }
+        }
     }
 }

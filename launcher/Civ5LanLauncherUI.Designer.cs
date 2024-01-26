@@ -47,13 +47,13 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.checkBox_TurnOnVPN_OverwriteConfig = new System.Windows.Forms.CheckBox();
-            this.textBox_Civ5ExePath = new System.Windows.Forms.TextBox();
-            this.openFileDialog_chooseGameExe = new System.Windows.Forms.OpenFileDialog();
             this.hoverHints = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip_ServerList = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.button_ServerList = new System.Windows.Forms.Button();
             this.button_TestMTU = new System.Windows.Forms.Button();
+            this.checkBox_TurnOnVPN_OverwriteConfig = new System.Windows.Forms.CheckBox();
+            this.textBox_Civ5ExePath = new System.Windows.Forms.TextBox();
+            this.openFileDialog_chooseGameExe = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -63,6 +63,7 @@
             // 
             resources.ApplyResources(this.button_ChooseGameExe, "button_ChooseGameExe");
             this.button_ChooseGameExe.Name = "button_ChooseGameExe";
+            this.hoverHints.SetToolTip(this.button_ChooseGameExe, resources.GetString("button_ChooseGameExe.ToolTip"));
             this.button_ChooseGameExe.UseVisualStyleBackColor = true;
             this.button_ChooseGameExe.Click += new System.EventHandler(this.button_ChooseGameExe_Click);
             // 
@@ -162,31 +163,6 @@
             this.hoverHints.SetToolTip(this.pictureBox2, resources.GetString("pictureBox2.ToolTip"));
             this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox2_Paint);
             // 
-            // checkBox_TurnOnVPN_OverwriteConfig
-            // 
-            resources.ApplyResources(this.checkBox_TurnOnVPN_OverwriteConfig, "checkBox_TurnOnVPN_OverwriteConfig");
-            this.checkBox_TurnOnVPN_OverwriteConfig.Checked = global::Civ5LanLauncher.Properties.Settings.Default.OverwriteConfig;
-            this.checkBox_TurnOnVPN_OverwriteConfig.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_TurnOnVPN_OverwriteConfig.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Civ5LanLauncher.Properties.Settings.Default, "OverwriteConfig", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.checkBox_TurnOnVPN_OverwriteConfig.Name = "checkBox_TurnOnVPN_OverwriteConfig";
-            this.hoverHints.SetToolTip(this.checkBox_TurnOnVPN_OverwriteConfig, resources.GetString("checkBox_TurnOnVPN_OverwriteConfig.ToolTip"));
-            this.checkBox_TurnOnVPN_OverwriteConfig.UseVisualStyleBackColor = true;
-            this.checkBox_TurnOnVPN_OverwriteConfig.CheckedChanged += new System.EventHandler(this.checkBox_TurnOnVPN_OverwriteConfig_CheckedChanged);
-            // 
-            // textBox_Civ5ExePath
-            // 
-            this.textBox_Civ5ExePath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Civ5LanLauncher.Properties.Settings.Default, "Civ5ExePath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            resources.ApplyResources(this.textBox_Civ5ExePath, "textBox_Civ5ExePath");
-            this.textBox_Civ5ExePath.Name = "textBox_Civ5ExePath";
-            this.textBox_Civ5ExePath.ReadOnly = true;
-            this.textBox_Civ5ExePath.Text = global::Civ5LanLauncher.Properties.Settings.Default.Civ5ExePath;
-            // 
-            // openFileDialog_chooseGameExe
-            // 
-            this.openFileDialog_chooseGameExe.AddExtension = false;
-            this.openFileDialog_chooseGameExe.FileName = global::Civ5LanLauncher.Properties.Settings.Default.Civ5ExePath;
-            resources.ApplyResources(this.openFileDialog_chooseGameExe, "openFileDialog_chooseGameExe");
-            // 
             // hoverHints
             // 
             this.hoverHints.AutomaticDelay = 50;
@@ -217,6 +193,31 @@
             this.button_TestMTU.Name = "button_TestMTU";
             this.button_TestMTU.UseVisualStyleBackColor = true;
             this.button_TestMTU.Click += new System.EventHandler(this.button_TestMTU_Click);
+            // 
+            // checkBox_TurnOnVPN_OverwriteConfig
+            // 
+            resources.ApplyResources(this.checkBox_TurnOnVPN_OverwriteConfig, "checkBox_TurnOnVPN_OverwriteConfig");
+            this.checkBox_TurnOnVPN_OverwriteConfig.Checked = global::Civ5LanLauncher.Properties.Settings.Default.OverwriteConfig;
+            this.checkBox_TurnOnVPN_OverwriteConfig.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_TurnOnVPN_OverwriteConfig.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Civ5LanLauncher.Properties.Settings.Default, "OverwriteConfig", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.checkBox_TurnOnVPN_OverwriteConfig.Name = "checkBox_TurnOnVPN_OverwriteConfig";
+            this.hoverHints.SetToolTip(this.checkBox_TurnOnVPN_OverwriteConfig, resources.GetString("checkBox_TurnOnVPN_OverwriteConfig.ToolTip"));
+            this.checkBox_TurnOnVPN_OverwriteConfig.UseVisualStyleBackColor = true;
+            this.checkBox_TurnOnVPN_OverwriteConfig.CheckedChanged += new System.EventHandler(this.checkBox_TurnOnVPN_OverwriteConfig_CheckedChanged);
+            // 
+            // textBox_Civ5ExePath
+            // 
+            this.textBox_Civ5ExePath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Civ5LanLauncher.Properties.Settings.Default, "Civ5ExePath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            resources.ApplyResources(this.textBox_Civ5ExePath, "textBox_Civ5ExePath");
+            this.textBox_Civ5ExePath.Name = "textBox_Civ5ExePath";
+            this.textBox_Civ5ExePath.ReadOnly = true;
+            this.textBox_Civ5ExePath.Text = global::Civ5LanLauncher.Properties.Settings.Default.Civ5ExePath;
+            // 
+            // openFileDialog_chooseGameExe
+            // 
+            this.openFileDialog_chooseGameExe.AddExtension = false;
+            this.openFileDialog_chooseGameExe.FileName = global::Civ5LanLauncher.Properties.Settings.Default.Civ5ExePath;
+            resources.ApplyResources(this.openFileDialog_chooseGameExe, "openFileDialog_chooseGameExe");
             // 
             // Civ5LanLauncherUI
             // 

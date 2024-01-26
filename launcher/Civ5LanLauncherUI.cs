@@ -7,12 +7,12 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Civ5LanLauncher.Properties;
 
 namespace Civ5LanLauncher
 {
@@ -31,37 +31,31 @@ namespace Civ5LanLauncher
             InitializeComponent();
         }
 
-        private static readonly Byte[] civ5ServerPing = { 0x00, 0x51, 0x45, 0x52, 0x65, 0x72, 0x69, 0x46 };
-        private static readonly Byte[] civ5ServerResponse = { 0x59, 0x4C, 0x50, 0x52, 0x65, 0x72, 0x69, 0x46 };
+        private static readonly Byte[] civ5ServerChallengePacket = { 0x00, 0x51, 0x45, 0x52, 0x65, 0x72, 0x69, 0x46 };
+        private static readonly Byte[] civ5ServerResponseHeader = { 0x59, 0x4C, 0x50, 0x52, 0x65, 0x72, 0x69, 0x46 };
 
         [DllImport("ntdll.dll")]
         private static extern Int32 RtlCompareMemory(Byte[] b1, Byte[] b2, Int32 count);
 
         private DialogResult MessageBoxA(String text, String caption = null
-            , MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None) {
-            return MessageBox.Show(this, text, caption ?? "Civilization V LAN Launcher", buttons, icon);
+          , MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None
+          , MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1) {
+            return (DialogResult)Program.mainForm.Invoke((Func<DialogResult>)delegate {
+                return MessageBox.Show(this, text, caption ?? "Civilization V LAN Launcher", buttons, icon
+                  , defaultButton);
+            });
         }
-
-        private static DialogResult MessageBoxS(String text, String caption = null
-            , MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None) {
-            return MessageBox.Show(null, text, caption ?? "Civilization V LAN Launcher", buttons, icon);
-        }
-
-        /*
-        private DialogResult MessageBoxA(String text, String caption = null
-            , MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None) {
-            return MessageBox.Show(this, text, caption ?? "Civilization V LAN Launcher", buttons, icon);
-        }
-        */
 
         /* Fields. */
+        private Random rnd = new Random();
         private NetworkInterface tapInterface;
         private IPAddress tapAddr;
         private Boolean canRunNet;
         private Boolean canRunExe;
 
         private void UpdateCanRun() {
-            button_TestMTU.Enabled = canRunNet;
+            button_TestMTU.Visible = canRunNet;
+            button_ServerList.Visible = canRunNet;
             if (canRunNet && canRunExe) {
                 toolStripStatusLabel1.Text = "Всё готово для игры";
                 button_RunGame.Enabled = true;
@@ -112,7 +106,7 @@ namespace Civ5LanLauncher
         }
 
         private void UpdateVisualStatus(String vpnActive = "", String ipAddr = "", String serverMode = ""
-            , String latency = "") {
+          , String latency = "") {
             this.Invoke((MethodInvoker)delegate {
                 if (vpnActive != "") label_VPNActive.Text = vpnActive;
                 if (ipAddr != "") label_IPAddr.Text = ipAddr;
@@ -132,6 +126,13 @@ namespace Civ5LanLauncher
                         button_TurnOnVPN.Visible = true;
                         checkBox_TurnOnVPN_OverwriteConfig.Visible = true;
                     });
+                    DialogResult dr = MessageBoxA("VPN не подключен. Попытаться включить автоматически?"
+                      , buttons: MessageBoxButtons.YesNo, icon: MessageBoxIcon.Error);
+                    if (dr == DialogResult.Yes) {
+                        RunVPN();
+                        CheckConnectivity();
+                    }
+
                     return;
                 }
 
@@ -147,7 +148,7 @@ namespace Civ5LanLauncher
                 UpdateCanRunNet(true);
             }
             catch (Exception e) {
-                MessageBoxA($"{e.Message}\n\n{e.StackTrace}", icon: MessageBoxIcon.Error);
+                MessageBoxA($"{e.Message}", icon: MessageBoxIcon.Error);
             }
         }
 
@@ -187,117 +188,74 @@ namespace Civ5LanLauncher
             return responseText;
         }
 
-        private class Ping2 : Ping
-        {
-            public UInt16 Length { get; }
+        private void RunMTUTestAsync() {
+            using (Mutex m = new Mutex()) {
+                Dictionary<UInt16, Tuple<Ping, PingCompletedEventArgs>> hs =
+                    new Dictionary<UInt16, Tuple<Ping, PingCompletedEventArgs>>();
+                PingOptions po = new PingOptions { DontFragment = true, Ttl = 1 };
 
-            public Ping2(UInt16 len) {
-                Length = len;
-            }
-        }
+                UInt16 l_min = 1300;
+                UInt16 l_max = (UInt16)tapInterface.GetIPProperties().GetIPv4Properties().Mtu;
+                int net_timeout = 1000;
+                int wait_timeout = 100;
 
-#if PING_ASYNC
-        private Mutex m = new Mutex();
-
-        private void RunMTUTest() {
-            Dictionary<UInt16, Tuple<Ping2, PingCompletedEventArgs>> hs =
-                new Dictionary<UInt16, Tuple<Ping2, PingCompletedEventArgs>>();
-
-            void OnPingCompleted(Object sender, PingCompletedEventArgs e) {
-                UInt16 l = ((Ping2)sender).Length;
-                if (!m.WaitOne(10)) {
-                    throw new Exception();
+                for (UInt16 l = l_min; l <= l_max; ++l) {
+                    hs[l] = null;
                 }
 
-                hs[l] = new Tuple<Ping2, PingCompletedEventArgs>(hs[l].Item1, e);
-                m.ReleaseMutex();
-            }
+                foreach (UInt16 l in new List<UInt16>(hs.Keys)) {
+                    Ping p = new Ping();
+                    p.PingCompleted += ((sender, e) => {
+                        if (e.Cancelled) {
+                            return;
+                        }
 
-            /*
-            hs[1300] = null;
-            hs[1397] = null;
-            hs[1398] = null;
-            hs[1405] = null;
-            hs[1406] = null;
-            hs[1472] = null;
-            hs[1473] = null;
-            hs[(UInt16)tapInterface.GetIPProperties().GetIPv4Properties().Mtu] = null;
-            */
-            for (UInt16 l = 1300; l <= (UInt16)tapInterface.GetIPProperties().GetIPv4Properties().Mtu; ++l) {
-                hs[l] = null;
-            }
+                        if (!m.WaitOne(wait_timeout)) {
+                            throw new Exception("Failed to acquire mutex");
+                        }
 
-            List<UInt16> keys = new List<UInt16>(hs.Keys);
-            foreach (UInt16 l in keys) {
-                Ping2 p = new Ping2(l);
-                p.PingCompleted += OnPingCompleted;
-                p.SendAsync(IPAddress.Parse("172.16.16.1"), 1000, new Byte[l]
-                    , new PingOptions { DontFragment = true });
-                hs[l] = new Tuple<Ping2, PingCompletedEventArgs>(p, null);
-                Thread.Sleep(3);
-            }
-
-            Thread.Sleep(1000);
-
-            m.WaitOne();
-            String ret = String.Empty;
-            foreach (UInt16 l in hs.Keys) {
-                Tuple<Ping2, PingCompletedEventArgs> t = hs[l];
-                PingCompletedEventArgs e = t.Item2;
-                if (e == null) {
-                    ret += $"{l} got no response\n";
-                    continue;
+                        UInt16 len = (UInt16)e.UserState;
+                        hs[len] = new Tuple<Ping, PingCompletedEventArgs>(hs[len].Item1, e);
+                        m.ReleaseMutex();
+                    });
+                    p.SendAsync(IPAddress.Parse("172.16.16.1"), net_timeout, new Byte[l], po, l);
+                    hs[l] = new Tuple<Ping, PingCompletedEventArgs>(p, null);
+                    Thread.Sleep(1); /* Why? */
                 }
 
-                if (e.Cancelled) {
-                    ret += $"{l} is cancelled\n";
-                    continue;
+                Thread.Sleep(net_timeout);
+
+                if (!m.WaitOne(wait_timeout)) {
+                    throw new Exception("Failed to acquire mutex");
                 }
 
-                if (e.Error != null) {
-                    ret += $"{l} exception: {e.Error}\n";
-                    continue;
+                String ret = String.Empty;
+                foreach (UInt16 l in hs.Keys) {
+                    Tuple<Ping, PingCompletedEventArgs> t = hs[l];
+                    t.Item1.SendAsyncCancel();
+                    PingCompletedEventArgs ev = t.Item2;
+                    if (ev == null) {
+                        ret += $"{l} sent and got no response\n";
+                    }
+                    else if (ev.Cancelled) {
+                        ret += $"{l} cancelled\n";
+                    }
+                    else if (ev.Error != null) {
+                        ret += $"{l} exception: {ev.Error}\n";
+                    }
+                    else if (ev.Reply.Status != IPStatus.Success) {
+                        ret += $"{l} status {ev.Reply.Status}\n";
+                    }
+
+                    hs[l].Item1.Dispose();
                 }
 
-                if (e.Reply.Status != IPStatus.Success) {
-                    ret += $"{l} status {e.Reply.Status}\n";
-                    continue;
+                if (ret != String.Empty) {
+                    MessageBoxA(ret, icon: MessageBoxIcon.Warning);
                 }
-
-                //ret += $"{l} OK\n";
-            }
-
-            foreach (UInt16 l in hs.Keys) {
-                hs[l].Item1.Dispose();
-            }
-
-            m.ReleaseMutex();
-
-            if (ret != String.Empty) {
-                MessageBoxA(ret);
-            }
-        }
-#endif
-
-        private void RunMTUTest() {
-            String ret = String.Empty;
-            for (UInt16 l = 1300; l <= (UInt16)tapInterface.GetIPProperties().GetIPv4Properties().Mtu; ++l) {
-                Ping p = new Ping();
-                PingReply pr = p.Send(IPAddress.Parse("172.16.16.1"), 300, new Byte[l], new PingOptions { DontFragment = true });
-                if (pr == null) {
-                    ret += $"{l} got no response\n";
-                    continue;
+                else {
+                    MessageBoxA("Все пинги прошли успешно - должно ли так быть?", icon: MessageBoxIcon.Warning);
                 }
-                if (pr.Status != IPStatus.Success) {
-                    ret += $"{l} status {pr.Status}\n";
-                    continue;
-                }
-
-                Thread.Sleep(0);
-            }
-
-            if (ret != String.Empty) {
-                MessageBoxA(ret);
             }
         }
 
@@ -393,21 +351,22 @@ namespace Civ5LanLauncher
         }
 
         private void ListRunningServers() {
+            if (tapInterface == null) {
+                return;
+            }
+
             this.Invoke((MethodInvoker)delegate {
                 contextMenuStrip_ServerList.Items.Clear();
                 button_ServerList.Text = "Поиск серверов...";
                 button_ServerList.Show();
             });
-            if (tapInterface == null) {
-                return;
-            }
 
             Int32 items = 0;
             using (Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)) {
                 s.Bind(new IPEndPoint(tapAddr, 0));
                 s.Blocking = false;
                 for (UInt16 port = 62900; port <= 62909; ++port) {
-                    s.SendTo(civ5ServerPing, new IPEndPoint(IPAddress.Parse("172.16.16.255"), port));
+                    s.SendTo(civ5ServerChallengePacket, new IPEndPoint(IPAddress.Parse("172.16.16.255"), port));
                 }
 
                 Byte[] buf = new Byte[65535];
@@ -418,10 +377,11 @@ namespace Civ5LanLauncher
                     try {
                         Int32 buflen = s.ReceiveFrom(buf, ref ep);
                         IPEndPoint iep = ((IPEndPoint)ep);
-                        if (RtlCompareMemory(buf, civ5ServerResponse, civ5ServerResponse.Length) == 0 || buflen < 20) {
-                            MessageBoxA($"Получены неизвестные данные!\n\n" +
+                        if (RtlCompareMemory(buf, civ5ServerResponseHeader, civ5ServerResponseHeader.Length) == 0 ||
+                            buflen < 20) {
+                            MessageBoxA("Получены неизвестные данные!\n\n" +
                                         $"Отправитель: {iep.Address}:{iep.Port}\n\n" +
-                                        $"Данные:\n\n" +
+                                        "Данные:\n\n" +
                                         $"{BitConverter.ToString(buf, buflen)}", icon: MessageBoxIcon.Error);
                             continue;
                         }
@@ -435,54 +395,120 @@ namespace Civ5LanLauncher
                         Int32 items1 = items;
                         this.Invoke((MethodInvoker)delegate {
                             contextMenuStrip_ServerList.Items.Add(descr).Enabled = false;
-                            button_ServerList.Text = $"Сервера: {items1}";
+                            button_ServerList.Text = $"Сервера: {items1} ...";
                         });
                     }
                     catch (SocketException e) {
                         if (e.SocketErrorCode != SocketError.TimedOut) {
                             MessageBoxA($"Ошибка {e.SocketErrorCode} ({e.ErrorCode}): {e.Message}"
-                                , icon: MessageBoxIcon.Error);
+                              , icon: MessageBoxIcon.Error);
                         }
 
                         break;
                     }
                 }
             }
+
+            this.Invoke((MethodInvoker)delegate { button_ServerList.Text = $"Сервера: {items}"; });
         }
 
         private Boolean CheckExe(String path) {
+            String civ5ExeVersion = "1.0.3.279";
             if (!File.Exists(path)) {
                 return false;
             }
 
-            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(path);
-            if (versionInfo.FileMajorPart != 1 || versionInfo.FileMinorPart != 0 ||
-                versionInfo.FileBuildPart != 3 ||
-                versionInfo.FilePrivatePart != 279) {
-                MessageBoxA($"Этот исполняемый файл имеет версию {versionInfo.FileVersion}, а нужна 1.0.3.279");
+            if (Path.GetExtension(path) != ".exe") {
+                MessageBoxA("Исполняемый файл должен иметь расширение .exe", icon: MessageBoxIcon.Error);
                 return false;
+            }
+
+            FileVersionInfo civ5ExeFileVer = FileVersionInfo.GetVersionInfo(path);
+            Version civ5ExeVer = new Version(civ5ExeFileVer.FileMajorPart, civ5ExeFileVer.FileMinorPart
+              , civ5ExeFileVer.FileBuildPart, civ5ExeFileVer.FilePrivatePart);
+            if (civ5ExeVer != Version.Parse(civ5ExeVersion)) {
+                DialogResult dr = MessageBoxA(
+                    $"Этот исполняемый файл имеет версию {civ5ExeVer}, а нужна {civ5ExeVersion}\n\n" +
+                    "Вы можете попытаться запустить другую версию Civilization V или даже другую игру, ответив Нет, но это будет " +
+                    "ИСКЛЮЧИТЕЛЬНО НА ВАШ СТРАХ И РИСК.\n\n" +
+                    "Выбрать другой файл игры?", buttons: MessageBoxButtons.YesNo, icon: MessageBoxIcon.Error);
+                if (dr != DialogResult.No) {
+                    return false;
+                }
+
+                dr = MessageBoxA(
+                    "Если вы выберете неподходящую версию игры Civilization V, вы не сможете зайти в сетевую игру, а другие не смогут подключиться к вам.\n\n" +
+                    $"Правилами сообщества принято играть на версии {civ5ExeVersion} с DLC Дивный новый мир.\n\n" +
+                    "Всё равно, невзирая на все возможные и невозможные трудности, хотите продолжить?"
+                  , buttons: MessageBoxButtons.OKCancel, defaultButton: MessageBoxDefaultButton.Button2
+                  , icon: MessageBoxIcon.Warning);
+                if (dr != DialogResult.OK) {
+                    return false;
+                }
+
+                int attempts = 2;
+                for (int i = 0; i < attempts; ++i) {
+                    HashSet<int> hs = new HashSet<Int32>();
+                    for (int j = 0; j < 3; ++j) {
+                        if (!hs.Add(rnd.Next(10, 100))) {
+                            --j;
+                        }
+                    }
+
+                    List<int> ls = new List<Int32>(hs);
+                    int val = ls[rnd.Next(3)];
+                    dr = MessageBoxA(
+                        $"Чтобы подтвердить серьёзность ваших намерений, нажмите ту кнопку, которая соотнесена с числом {val}\n\n" +
+                        $"Да - {ls[0]}\n" +
+                        $"Нет - {ls[1]}\n" +
+                        $"Отмена - {ls[2]}", caption: $"Проверка серьёзности намерений {i + 1}/{attempts}"
+                      , MessageBoxButtons.YesNoCancel);
+                    int idx;
+                    switch (dr) {
+                        case DialogResult.Yes:
+                            idx = 0;
+                            break;
+                        case DialogResult.No:
+                            idx = 1;
+                            break;
+                        case DialogResult.Cancel:
+                            idx = 2;
+                            break;
+                        default: throw new ApplicationException("wtf");
+                    }
+
+                    if (val != ls[idx]) {
+                        return false;
+                    }
+                }
+
+                MessageBoxA("Проверки на дурака успешно пройдены. Приятной игры :]", icon: MessageBoxIcon.Information);
             }
 
             return true;
         }
 
+        private void RunOpenVPNDownload() {
+            Process.Start(new ProcessStartInfo {
+                UseShellExecute = true
+              , FileName = "https://swupdate.openvpn.org/community/releases/OpenVPN-2.6.8-I001-amd64.msi"
+            });
+        }
+
         private void RunVPN() {
             try {
                 String configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-                    , "OpenVPN\\config");
+                  , @"OpenVPN\config");
                 const String vpnCliExe = @"C:\Program Files\OpenVPN\bin\openvpn.exe";
                 const String vpnGuiExe = @"C:\Program Files\OpenVPN\bin\openvpn-gui.exe";
                 if (!File.Exists(vpnCliExe) || !File.Exists(vpnGuiExe)) {
                     DialogResult dr = MessageBoxA("Похоже, что OpenVPN не установлен. Открыть ссылку скачивания?"
-                        , "Автоопределение OpenVPN не удалось", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                      , "Автоопределение OpenVPN не удалось", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (dr == DialogResult.No) {
                         return;
                     }
 
-                    Process.Start(new ProcessStartInfo {
-                        UseShellExecute = true
-                        , FileName = "https://swupdate.openvpn.org/community/releases/OpenVPN-2.6.8-I001-amd64.msi"
-                    });
+                    RunOpenVPNDownload();
                     return;
                 }
 
@@ -490,70 +516,92 @@ namespace Civ5LanLauncher
                 if (Version.Parse(vpnCliVer.FileVersion) < Version.Parse("2.5.0")) {
                     DialogResult dr = MessageBoxA(
                         $"Установлен OpenVPN версии {vpnCliVer.FileMajorPart}.{vpnCliVer.FileMinorPart}.{vpnCliVer.FileBuildPart}, а нужен 2.5.0 или новее. Открыть ссылку скачивания?"
-                        , "OpenVPN старой версии", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                      , "OpenVPN старой версии", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (dr == DialogResult.No) {
                         return;
                     }
 
-                    Process.Start(new ProcessStartInfo {
-                        UseShellExecute = true
-                        , FileName = "https://swupdate.openvpn.org/community/releases/OpenVPN-2.6.8-I001-amd64.msi"
-                    });
+                    RunOpenVPNDownload();
                     return;
                 }
 
                 String configFilePath = Path.Combine(configDir, "nsk1-tap.ovpn");
-                if (Properties.Settings.Default.OverwriteConfig || !File.Exists(configFilePath)) {
-                    File.WriteAllBytes(configFilePath, Properties.Resources.OpenVPN_ClientConfig);
+                if (Settings.Default.OverwriteConfig || !File.Exists(configFilePath)) {
+                    File.WriteAllBytes(configFilePath, Resources.OpenVPN_ClientConfig);
                 }
 
                 using (Process p = Process.Start(vpnGuiExe, "--command disconnect nsk1-tap")) {
                     p?.WaitForExit();
                 }
 
-                MessageBoxA("Внимание:\n\n" +
-                            "При первом подключении к VPN происходит регистрация - " +
-                            "введите своё желаемое имя пользователя и пароль.\n\n" +
-                            "При повторных подключениях к VPN нужно будет вводить те же " +
-                            "имя пользователя и пароль, что и в первый раз."
-                    , icon: MessageBoxIcon.Information);
+                if (Settings.Default.VPNCredentialsHintLeft > 0) {
+                    Settings.Default.VPNCredentialsHintLeft -= 1;
+                    Settings.Default.Save();
+                    MessageBoxA("Внимание:\n\n" +
+                                "При первом подключении к VPN происходит регистрация - " +
+                                "введите своё желаемое имя пользователя и пароль.\n\n" +
+                                "При повторных подключениях к VPN нужно будет вводить те же " +
+                                "имя пользователя и пароль, что и в первый раз.\n\n" +
+                                $"Это сообщение будет показано ещё {Settings.Default.VPNCredentialsHintLeft} " +
+                                $"раз{(Settings.Default.VPNCredentialsHintLeft >= 2 ? "а" : "")}"
+                      , icon: MessageBoxIcon.Information);
+                }
 
                 using (Process unused = Process.Start(vpnGuiExe
-                           , "--connect nsk1-tap --silent_connection 0")) { }
+                         , "--connect nsk1-tap --silent_connection 0")) { }
 
                 MessageBoxA(@"Нажмите ""OK"", когда OpenVPN завершит подключение"
-                    , icon: MessageBoxIcon.Information);
+                  , icon: MessageBoxIcon.Information);
                 button_TurnOnVPN.Visible = false;
                 checkBox_TurnOnVPN_OverwriteConfig.Visible = false;
             }
             catch (Exception e) {
-                MessageBoxA(e.Message, icon: MessageBoxIcon.Error);
+                MessageBoxA($"Произошла ошибка запуска VPN: {e.Message}", icon: MessageBoxIcon.Error);
             }
         }
 
-        private void RunGame() {
+        private async void RunGame() {
+            button_RunGame.Enabled = false;
             try {
                 String tmpDir = Path.GetTempPath();
-                File.WriteAllBytes($"{tmpDir}\\ForceBindIP.exe", Properties.Resources.ForceBindIP);
-                File.WriteAllBytes($"{tmpDir}\\BindIP.dll", Properties.Resources.BindIP);
+                File.WriteAllBytes($@"{tmpDir}\ForceBindIP.exe", Resources.ForceBindIP);
+                File.WriteAllBytes($@"{tmpDir}\BindIP.dll", Resources.BindIP);
 
                 //FirewallHelper.Instance.GrantAuthorization(Settings.Default.Civ5ExePath, "Civ5 Executable");
 
-                Console.WriteLine(
-                    $"Running {Path.GetTempPath()}\\ForceBindIP.exe {tapInterface.Id} \"{Properties.Settings.Default.Civ5ExePath}\"");
-                using (Process p = Process.Start($"{Path.GetTempPath()}\\ForceBindIP.exe"
-                           , $"{tapInterface.Id} \"{Properties.Settings.Default.Civ5ExePath}\"")) {
-                    p?.WaitForExit();
+                String exePath = $@"{Path.GetTempPath()}\ForceBindIP.exe";
+                String exeArgs = $@"{tapInterface.Id} ""{Settings.Default.Civ5ExePath}""";
+                Console.WriteLine($"Running {exePath} {exeArgs}...");
+                using (Process p = Process.Start(new ProcessStartInfo {
+                           FileName = exePath, Arguments = exeArgs
+                         , WorkingDirectory = Path.GetDirectoryName(Settings.Default.Civ5ExePath) ??
+                                              throw new ApplicationException(
+                                                  "Не удалось получить рабочую папку для игры")
+                       })) {
+                    if (p == null) {
+                        throw new ApplicationException("Не удалось запустить игру - процесс не создан");
+                    }
+
+                    p.WaitForExit(1000);
                 }
+
+                await Task.Delay(3000); /* awaitable version of Thread.Sleep() */
             }
             catch (Exception e) {
-                MessageBoxA(e.Message, icon: MessageBoxIcon.Error);
+                MessageBoxA($"Произошла ошибка запуска игры: {e.Message}", icon: MessageBoxIcon.Error);
+            }
+            finally {
+                button_RunGame.Enabled = true;
             }
         }
 
-        private void Form1_Load(Object sender, EventArgs e) {
-            UpdateCanRunExe(CheckExe(Properties.Settings.Default.Civ5ExePath));
-            CheckConnectivity();
+        private async void Form1_Load(Object sender, EventArgs e) {
+            this.Enabled = false;
+            await Task.Run(() => {
+                UpdateCanRunExe(CheckExe(Settings.Default.Civ5ExePath));
+                CheckConnectivity();
+            });
+            this.Enabled = true;
         }
 
         private void button_CheckConnectivity_Click(Object sender, EventArgs e) {
@@ -564,8 +612,8 @@ namespace Civ5LanLauncher
             openFileDialog_chooseGameExe.ShowDialog();
             Boolean can = CheckExe(openFileDialog_chooseGameExe.FileName);
             if (can) {
-                Properties.Settings.Default.Civ5ExePath = openFileDialog_chooseGameExe.FileName;
-                Properties.Settings.Default.Save();
+                Settings.Default.Civ5ExePath = openFileDialog_chooseGameExe.FileName;
+                Settings.Default.Save();
                 UpdateCanRunExe(true);
             }
         }
@@ -579,9 +627,9 @@ namespace Civ5LanLauncher
             CheckConnectivity();
         }
 
-        private void button_ShowServers_Click(Object sender, EventArgs e) {
-            Task.Run(ListRunningServers);
+        private async void button_ShowServers_Click(Object sender, EventArgs e) {
             button_ServerList_MouseEnter(sender, e);
+            await Task.Run(ListRunningServers);
         }
 
         private void button_ServerList_MouseEnter(Object sender, EventArgs e) {
@@ -593,21 +641,25 @@ namespace Civ5LanLauncher
         }
 
         private void checkBox_TurnOnVPN_OverwriteConfig_CheckedChanged(Object sender, EventArgs e) {
-            Properties.Settings.Default.Save();
+            Settings.Default.Save();
         }
 
-        private void button_TestMTU_Click(Object sender, EventArgs e) {
-            RunMTUTest();
+        private async void button_TestMTU_Click(Object sender, EventArgs e) {
+            button_TestMTU.Enabled = false;
+            this.UseWaitCursor = true;
+            await Task.Run(RunMTUTestAsync);
+            this.UseWaitCursor = false;
+            button_TestMTU.Enabled = true;
         }
 
         private void pictureBox1_Paint(Object sender, PaintEventArgs e) {
             e.Graphics.FillRectangle(canRunNet ? Brushes.LawnGreen : Brushes.OrangeRed, 0, 0
-                , pictureBox1.Width, pictureBox1.Height);
+              , pictureBox1.Width, pictureBox1.Height);
         }
 
         private void pictureBox2_Paint(Object sender, PaintEventArgs e) {
             e.Graphics.FillRectangle(canRunExe ? Brushes.LawnGreen : Brushes.OrangeRed, 0, 0
-                , pictureBox2.Width, pictureBox2.Height);
+              , pictureBox2.Width, pictureBox2.Height);
         }
     }
 }
